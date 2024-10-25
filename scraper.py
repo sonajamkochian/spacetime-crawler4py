@@ -18,22 +18,16 @@ def extract_next_links(url, resp):
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
 
+    if resp.status != 200:
+        return []
 
-
-
-
-    # jacqueline -- trying smth out (with lxml)
-    # if resp.status != 200:
-    #   return []
-    #       --> nothing retrieved, so empty list
-    #
-    # content = html.fromstring(resp.raw_response.content) 
+    content = html.fromstring(resp.raw_response.content) 
     #       --> converts html to string
     #
-    # links = content.xpath('//a/@href') 
+    links = content.xpath('//a/@href') 
     #       --> gets hyperlinks in the raw content
     #
-    # return [urljoin(url, link) for link in links]
+    return [urljoin(url, link) for link in links]
     #       --> returns list of hyperlinks
 
 
@@ -41,39 +35,6 @@ def extract_next_links(url, resp):
     #urljoin: combines urls to create absolute url 
     # absolute url:  full url (http://uci.edu/stuff)
     # relative url: url that only has path (/stuff)
-
-
-    #parses html content into links - acts as stucture of page
-    links = html.fromstring(resp.raw_resposne.content)
-    
-
-
-
-    #<anchor tag <a> defines hyperlink (used to link from one page to another)
-    #href attribute indicates the link's destination (url)
-    #<a> tag is not a hyperlink without href attribute
-
-    #//a[@href] selects all <a> elements with href attribute
-    anchors = links.xpath('//a[@href]')
-
-    #processes each anchor element in order to extract url (<a href = "http:example.com">)
-    for element in anchors:
-
-        #gets value of href attribute from anchor element <a> in <a href>
-        #href can either be relative or absolute url
-        href = element.get('href')
-
-        #creates absolute url from base url of current page with href 
-        #makes relative url into absolute urls for crawler
-        absolute  = urljoin(url, href)  
-
-
-
-
-
-
-
-    return list()
 
 def is_valid(url):
     # Decide whether to crawl this url or not. 
