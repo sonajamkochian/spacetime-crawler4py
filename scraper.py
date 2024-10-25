@@ -18,28 +18,8 @@ def extract_next_links(url, resp):
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
 
-   
 
 
-
-    
-
-    # jacqueline -- just trying smth out (with BeautifulSoup)
-    # if resp.status != 200:
-    #   return []
-    #       --> nothing retrieved, so empty list
-    #
-    # soup = BeautifulSoup(resp.raw_response.content, 'html.parser')
-    #       --> initializes a BeautifulSoup obj with the page contents
-    #       --> 'html.parser' for parsing contents
-    #
-    # links = [urljoin(url, link['href']) for link in soup.find_all('a', href=True)]
-    #       --> for loop finds <a> tags with 'href'attb(s) in content + takes that value
-    #       --> urljoin converts links to URLs again
-    #       --> originally used a written out for loop, but changed it to list comprehension idk
-    #
-    # return links
-    #       --> returns list of hyperlinks
 
 
     # jacqueline -- trying smth out (with lxml)
