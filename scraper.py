@@ -18,10 +18,16 @@ def extract_next_links(url, resp):
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
 
-    if resp.status != 200:
-        return []
 
-    content = html.fromstring(resp.raw_response.content) 
+
+
+
+    # jacqueline -- trying smth out (with lxml)
+    # if resp.status != 200:
+    #   return []
+    #       --> nothing retrieved, so empty list
+    #
+    # content = html.fromstring(resp.raw_response.content) 
     #       --> converts html to string
     #
     links = content.xpath('//a/@href') 
@@ -62,7 +68,7 @@ def extract_next_links(url, resp):
         absolute  = urljoin(url, href)  
 
 
-
+        #test
 
 
 
