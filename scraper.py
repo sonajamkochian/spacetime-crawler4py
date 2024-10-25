@@ -18,12 +18,9 @@ def extract_next_links(url, resp):
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
 
-    # urlparse: parses url 
-    #urljoin: combines urls to create absolute url 
-    # absolute url:  full url (http://uci.edu/stuff)
-    # relative url: url that only has path (/stuff)
+   
 
-    
+
 
     
 
@@ -60,12 +57,35 @@ def extract_next_links(url, resp):
     #       --> returns list of hyperlinks
 
 
-    links = html.fromstring(resp.raw_resposne.content)
-    anchor = links.xpath('//a[@href]')
+    # urlparse: parses url 
+    #urljoin: combines urls to create absolute url 
+    # absolute url:  full url (http://uci.edu/stuff)
+    # relative url: url that only has path (/stuff)
 
-    for element in anchor:
+
+    #parses html content into links - acts as stucture of page
+    links = html.fromstring(resp.raw_resposne.content)
+    
+
+
+
+    #<anchor tag <a> defines hyperlink (used to link from one page to another)
+    #href attribute indicates the link's destination (url)
+    #<a> tag is not a hyperlink without href attribute
+
+    #//a[@href] selects all <a> elements with href attribute
+    anchors = links.xpath('//a[@href]')
+
+    #processes each anchor element in order to extract url (<a href = "http:example.com">)
+    for element in anchors:
+
+        #gets value of href attribute from anchor element <a> in <a href>
+        #href can either be relative or absolute url
         href = element.get('href')
-        absolute  = urljoin(url, href)
+
+        #creates absolute url from base url of current page with href 
+        #makes relative url into absolute urls for crawler
+        absolute  = urljoin(url, href)  
 
 
 
