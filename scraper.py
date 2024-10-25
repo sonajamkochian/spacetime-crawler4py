@@ -18,6 +18,15 @@ def extract_next_links(url, resp):
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
 
+    # urlparse: parses url 
+    #urljoin: combines urls to create absolute url 
+    # absolute url:  full url (http://uci.edu/stuff)
+    # relative url: url that only has path (/stuff)
+
+    
+
+    
+
     # jacqueline -- just trying smth out (with BeautifulSoup)
     # if resp.status != 200:
     #   return []
@@ -49,6 +58,20 @@ def extract_next_links(url, resp):
     #
     # return [urljoin(url, link) for link in links]
     #       --> returns list of hyperlinks
+
+
+    links = html.fromstring(resp.raw_resposne.content)
+    anchor = links.xpath('//a[@href]')
+
+    for element in anchor:
+        href = element.get('href')
+        absolute  = urljoin(url, href)
+
+
+
+
+
+
 
     return list()
 
