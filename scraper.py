@@ -19,6 +19,11 @@ def extract_next_links(url, resp):
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> refs/remotes/origin/master
 
     # jacqueline -- trying smth out (with lxml)
     if resp.status != 200:
@@ -40,6 +45,42 @@ def extract_next_links(url, resp):
     # absolute url:  full url (http://uci.edu/stuff)
     # relative url: url that only has path (/stuff)
 
+<<<<<<< HEAD
+=======
+
+    #parses html content into links - acts as stucture of page
+    links = html.fromstring(resp.raw_resposne.content)
+    
+
+
+
+    #<anchor tag <a> defines hyperlink (used to link from one page to another)
+    #href attribute indicates the link's destination (url)
+    #<a> tag is not a hyperlink without href attribute
+
+    #//a[@href] selects all <a> elements with href attribute
+    anchors = links.xpath('//a[@href]')
+
+    #processes each anchor element in order to extract url (<a href = "http:example.com">)
+    for element in anchors:
+
+        #gets value of href attribute from anchor element <a> in <a href>
+        #href can either be relative or absolute url
+        href = element.get('href')
+
+        #creates absolute url from base url of current page with href 
+        #makes relative url into absolute urls for crawler
+        absolute  = urljoin(url, href)  
+
+
+        #test
+
+
+
+
+    return list()
+
+>>>>>>> refs/remotes/origin/master
 def is_valid(url):
     # Decide whether to crawl this url or not. 
     # If you decide to crawl it, return True; otherwise return False.
