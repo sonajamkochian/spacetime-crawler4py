@@ -1,6 +1,5 @@
 import re
 from urllib.parse import urljoin, urlparse
-from bs4 import BeautifulSoup
 from lxml import html
 
 def scraper(url, resp):
