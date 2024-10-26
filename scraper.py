@@ -112,14 +112,13 @@ def extract_next_links(url, resp):
     content = html.fromstring(resp.raw_response.content) 
     #       --> converts html to string
     #
-    anchors = content.xpath('//a/@href') 
+    links = content.xpath('//a/@href') 
     #       --> gets hyperlinks in the raw content
     #
     res = []
 
-    for anchor in anchors:
-        #link = anchor.get("href")
-        purl = urlparse(urljoin(url, anchor))
+    for link in links:
+        purl = urlparse(urljoin(url, link))
         purl = purl._replace(fragment="")
         res.append(urlunparse(purl))
 
