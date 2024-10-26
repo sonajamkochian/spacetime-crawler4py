@@ -1,5 +1,5 @@
 import re
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, urlunparse
 from lxml import html
 
 stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between",
@@ -113,7 +113,6 @@ def extract_next_links(url, resp):
     links = content.xpath('//a/@href') 
     #       --> gets hyperlinks in the raw content
     #
-<<<<<<< HEAD
     res = []
 
     for link in links:
@@ -123,11 +122,6 @@ def extract_next_links(url, resp):
 
     return res
 
-
-    #return [urljoin(url, link) for link in links]
-=======
-    return [urljoin(url, link) for link in links]
->>>>>>> 64d31807032e64b7f5f9b6d7d5e184649d91e424
     #       --> returns list of hyperlinks
 
 
