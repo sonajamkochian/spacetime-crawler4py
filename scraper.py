@@ -118,8 +118,8 @@ def extract_next_links(url, resp):
     res = []
 
     for anchor in anchors:
-        link = anchor.get("href")
-        purl = urlparse(urljoin(url, link))
+        #link = anchor.get("href")
+        purl = urlparse(urljoin(url, anchor))
         purl = purl._replace(fragment="")
         res.append(urlunparse(purl))
 
