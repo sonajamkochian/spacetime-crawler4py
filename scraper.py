@@ -1,7 +1,6 @@
 import re
 from urllib.parse import urljoin, urlparse, urlunparse
 from lxml import html
-import requests
 
 stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between",
                   "both", "but", "by", "can't", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't",
@@ -88,23 +87,7 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 #         sys.exit(1)
 
 def scraper(url, resp):
-
-    if len(resp.raw_response.content) < 500:
-        return []
-    
-
-
-
-    
     links = extract_next_links(url, resp)
-
-
-    helper(url, resp.raw_response.content)
-
-
-    
-
-
     return [link for link in links if is_valid(link)]
 
 def extract_next_links(url, resp):
@@ -160,11 +143,11 @@ def is_valid(url):
     try:
         parsed = urlparse(url)
 
-        resp = requests.get(url)
-        content = resp.raw_response.content.decode()
-        word_count = len(content.split())
-        if word_count < 100:
-            return False
+        # resp = requests.get(url)
+        # content = resp.raw_response.content.decode()
+        # word_count = len(content.split())
+        #if word_count < 100:
+            # return False
 
         #list of provided domains that are valid
         domains = [".ics.uci.edu/", ".cs.uci.edu/", ".informatics.uci.edu/", ".stat.uci.edu/", "today.uci.edu/department/information_computer_sciences/"]
@@ -191,6 +174,3 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
-
-def helper(url, content):
-    pass
