@@ -87,7 +87,23 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 #         sys.exit(1)
 
 def scraper(url, resp):
+    
+    if len(resp.raw_response.content) < 500:
+        return []
+    
+
+
+
+   
     links = extract_next_links(url, resp)
+
+    
+
+    helper(url, resp.raw_response.content)
+
+
+    
+
     return [link for link in links if is_valid(link)]
 
 def extract_next_links(url, resp):
@@ -174,3 +190,6 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
+
+def helper(url, content):
+    pass
