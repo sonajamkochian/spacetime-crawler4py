@@ -142,6 +142,12 @@ def is_valid(url):
     try:
         parsed = urlparse(url)
 
+        resp = requests.get(url)
+        content = resp.raw_response.content.decode()
+        word_count = len(content.split())
+        if word_count < 100:
+            return False
+
         #list of provided domains that are valid
         domains = [".ics.uci.edu/", ".cs.uci.edu/", ".informatics.uci.edu/", ".stat.uci.edu/", "today.uci.edu/department/information_computer_sciences/"]
 
@@ -161,6 +167,8 @@ def is_valid(url):
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
+        
+
 
     except TypeError:
         print ("TypeError for ", parsed)
