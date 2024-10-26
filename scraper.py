@@ -54,7 +54,7 @@ def is_valid(url):
         parsed = urlparse(url)
 
         #list of provided domains that are valid
-        domains = [".ics.uci.edu/", ".cs.uci.edu/", ".informatics.uci.edu/", ".stat.uci.edu/", "today.uci.edu/department/information_computer_sciences/*"]
+        domains = [".ics.uci.edu/*", ".cs.uci.edu/*", ".informatics.uci.edu/*", ".stat.uci.edu/*", "today.uci.edu/department/information_computer_sciences/*"]
 
         #checks if domains that are valid in url - returns false if url doesn't have them
         if all(domain not in url for domain in domains):
