@@ -1,5 +1,5 @@
 import re
-from urllib.parse import urljoin, urlparse, urlunparse
+from urllib.parse import urljoin, urlparse
 from lxml import html
 
 stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between",
@@ -86,8 +86,6 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 #         print(f"Error reading the file: {error}")
 #         sys.exit(1)
 
-
-
 def scraper(url, resp):
     links = extract_next_links(url, resp)
     return [link for link in links if is_valid(link)]
@@ -112,21 +110,10 @@ def extract_next_links(url, resp):
     content = html.fromstring(resp.raw_response.content) 
     #       --> converts html to string
     #
-    anchors = content.xpath('//a/@href') 
+    links = content.xpath('//a/@href') 
     #       --> gets hyperlinks in the raw content
     #
-    res = []
-
-    for anchor in anchors:
-        link = anchor.get("href")
-        purl = urlparse(urljoin(url, link))
-        purl = purl._replace(fragment="")
-        res.append(urlunparse(purl))
-
-    return res
-
-
-    #return [urljoin(url, link) for link in links]
+    return [urljoin(url, link) for link in links]
     #       --> returns list of hyperlinks
 
 
