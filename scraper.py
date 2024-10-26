@@ -87,10 +87,10 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 #         sys.exit(1)
 
 def scraper(url, resp):
-    
+    '''
     if len(resp.raw_response.content) < 500:
         return []
-    
+    '''
 
 
 
@@ -99,7 +99,7 @@ def scraper(url, resp):
 
     
 
-    helper(url, resp.raw_response.content)
+    #helper(url, resp.raw_response.content)
 
 
     
