@@ -100,29 +100,29 @@ def extract_next_links(url, resp):
     #         resp.raw_response.url: the url, again
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
+    
+    try:
+        # jacqueline -- trying smth out (with lxml)
+        if resp.status != 200:
+            return []
+        #       --> nothing retrieved, so empty list
+        #
+        content = html.fromstring(resp.raw_response.content) 
+        #       --> converts html to string
+        #
+        links = content.xpath('//a/@href') 
+        #       --> gets hyperlinks in the raw content
+        #
+        res = []
+        for link in links:
+            purl = urlparse(urljoin(url, link))
+            purl = purl._replace(fragment="")
+            res.append(urlunparse(purl))
 
-
-    # jacqueline -- trying smth out (with lxml)
-    if resp.status != 200:
-       return []
-    #       --> nothing retrieved, so empty list
-    #
-    content = html.fromstring(resp.raw_response.content) 
-    #       --> converts html to string
-    #
-    links = content.xpath('//a/@href') 
-    #       --> gets hyperlinks in the raw content
-    #
-    res = []
-
-    for link in links:
-        purl = urlparse(urljoin(url, link))
-        purl = purl._replace(fragment="")
-        res.append(urlunparse(purl))
-
-    return res
-
-    #       --> returns list of hyperlinks
+        return res
+        #       --> returns list of hyperlinks
+    except:
+        return []
 
 
     # urlparse: parses url 
