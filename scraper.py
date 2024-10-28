@@ -1,6 +1,7 @@
 import re
 from urllib.parse import urljoin, urlparse, urlunparse
 from lxml import html
+#from Collections import Counter
 
 stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between",
                   "both", "but", "by", "can't", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't",
@@ -12,6 +13,17 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
                   "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"
 
 ])
+
+'''
+#possibly/potential way to track unique pages, all subdomains, and word counts of pages
+storage = {
+    "unique": set(),
+    "subdomains": Counter(),
+    "page_word_count":  Counter(),
+
+}
+'''
+
 
 # def letter_or_digit(char):
 #     return ('a' <= char <= 'z') or ('A' <= char <= 'Z') or ('0' <= char <= '9')
@@ -87,7 +99,48 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 #         sys.exit(1)
 
 def scraper(url, resp):
+
+    #Theory to see if this actually checks whether "content" is empty or small
+    '''
+    if len(resp.raw_response.content) < 100:
+        return []
+    '''
+
+
+
+
     links = extract_next_links(url, resp)
+
+    """
+    #stores unique pages, disregarding fragements. 
+    #can just be put under extract_next_links i believe before appending ? 
+
+    non_defrag_links = urlparse(url)._replace(fragemnts='').geturl()
+    storage["unique"].add(non_defrag_links)
+    """
+
+    '''
+    #calls helper function which tracks word freq and longest page
+    helper(url, resp.raw_response.content)
+    '''
+
+
+    '''
+    # gets all subdomain potentially 
+    
+    if ".uci.edu" in url:
+        parsed_url = urlparse(url)
+        #from urlib: .netloc: contains network location which is domain and any subdomain if is there 
+        #.hostname works i believe, and probably might be better honestly.i read about netloc first 
+        sub = parsed_url.netloc
+
+
+        #possible adds subdomain link 
+        storage["subdomains"][sub] += 1
+
+    '''
+
+
     return [link for link in links if is_valid(link)]
 
 def extract_next_links(url, resp):
@@ -166,3 +219,20 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
+
+"""
+def helper(url, content):
+    #from lxml documentation: .text_content(): Returns the text content of the element, including the text content of its children, with no markup.
+
+    text = html.fromstring(content).text_content()
+    words = re.findall(r"\b\w+\b", text.lower())
+    filtered = [word for word in words if word not in stop_words]
+    count = len(filtered)
+
+
+    #should probably count per page and track the longest 
+    storage["page_word_count"][url] = count
+
+
+
+"""
