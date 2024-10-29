@@ -215,6 +215,10 @@ def is_valid(url):
             return False
         elif "?share=" in url:
             return False
+        elif "http://flamingo.ics.uci.edu/release" in url:
+            return False
+        elif "https://cloudberry.ics.uci.edu/" in url:
+            return False
 
         if parsed.scheme not in set(["http", "https"]):
             return False
