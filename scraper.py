@@ -109,47 +109,37 @@ def scraper(url, resp):
     if resp.status != 200 or resp.raw_response is None or resp.raw_response.content is None:
         return []
 
-    if len(resp.raw_response.content) < 100:
-        return []
+    # if len(resp.raw_response.content) < 100:
+    #     return []
 
-    text = html.fromstring(resp.raw_response.content).text_content()
+    # text = html.fromstring(resp.raw_response.content).text_content()
 
-    words = re.findall(r'\b\w+\b', text)
-    len(words)
+    # words = re.findall(r'\b\w+\b', text)
+    # len(words)
 
-    if len(words) < 500:
+    # if len(words) < 500:
+    #     return []
+
+    try:
+        # Decode content safely and check if it's non-empty
+        content = resp.raw_response.content.decode('utf-8', errors='ignore')
+        if not content.strip():
+            return []
+
+        # Parse the HTML content to text
+        text = html.fromstring(content).text_content()
+
+        # Find words and filter out pages with fewer than 500 words
+        words = re.findall(r'\b\w+\b', text)
+        if len(words) < 500:
+            return []
+
+    except Exception as e:
+        print(f"Error parsing content at {url}: {e}")
         return []
 
     links = extract_next_links(url, resp)
-
-    """
-    #stores unique pages, disregarding fragements. 
-    #can just be put under extract_next_links i believe before appending ? 
-
-    non_defrag_links = urlparse(url)._replace(fragemnts='').geturl()
-    storage["unique"].add(non_defrag_links)
-    """
-
-    '''
-    #calls helper function which tracks word freq and longest page
-    helper(url, resp.raw_response.content)
-    '''
-
-    '''
-    # gets all subdomain potentially 
     
-    if ".uci.edu" in url:
-        parsed_url = urlparse(url)
-        #from urlib: .netloc: contains network location which is domain and any subdomain if is there 
-        #.hostname works i believe, and probably might be better honestly.i read about netloc first 
-        sub = parsed_url.netloc
-
-
-        #possible adds subdomain link 
-        storage["subdomains"][sub] += 1
-
-    '''
-
     return [link for link in links if is_valid(link)]
 
 
@@ -215,14 +205,15 @@ def is_valid(url):
 
         if "https://isg.ics.uci.edu/events/" in url:
             return False
-
-        if ".war" in url:
+        elif ".war" in url:
             return False
-
-        if ".php" in url:
+        elif ".php" in url:
             return False
-
-        if "https://www.ics.uci.edu/~eppstein/pix/" in url:
+        elif "https://www.ics.uci.edu/~eppstein/pix/" in url:
+            return False
+        elif "?outlook-ical=" in url:
+            return False
+        elif "?share=" in url:
             return False
 
         if parsed.scheme not in set(["http", "https"]):
