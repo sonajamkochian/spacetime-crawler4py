@@ -101,7 +101,7 @@ storage = {
 def scraper(url, resp):
 
     #Theory to see if this actually checks whether "content" is empty or small
-
+    '''
     if len(resp.raw_response.content) < 100:
         return []
     '''
