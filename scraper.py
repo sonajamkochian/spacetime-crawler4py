@@ -101,18 +101,17 @@ storage = {
 def scraper(url, resp):
 
     #Theory to see if this actually checks whether "content" is empty or small
-    '''
+    
     if len(resp.raw_response.content) < 100:
         return []
+    
     '''
-
     content = resp.raw_response.content.decode('utf-8')
     words = re.findall(r'\b\w+\b', content)
     if len(words) < 100:
         return []
-
+    '''
     links = extract_next_links(url, resp)
-
     """
     #stores unique pages, disregarding fragements. 
     #can just be put under extract_next_links i believe before appending ? 
