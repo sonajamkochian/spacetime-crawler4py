@@ -123,7 +123,6 @@ def scraper(url, resp):
     if len(words) < 500:
         return []
 
-
     
     links = extract_next_links(url, resp)
 
@@ -216,6 +215,15 @@ def is_valid(url):
 
         #checks if domains that are valid in url - returns false if url doesn't have them
         if all(domain not in url for domain in domains):
+            return False
+        
+        if "https://isg.ics.uci.edu/events/" in url:
+            return False
+        
+        if ".war" in url:
+            return False
+        
+        if ".php" in url:
             return False
 
 
