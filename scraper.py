@@ -1,18 +1,18 @@
 import re
 from urllib.parse import urljoin, urlparse, urlunparse
 from lxml import html
-#from Collections import Counter
+# from Collections import Counter
 
 stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between",
                   "both", "but", "by", "can't", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't",
                   "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her", "here", "here's", "hers", "herself", "him", "herself", "his", "how", "how's", "i", "i'd",
-                  "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", 
-                  "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such", 
-                  "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", 
-                  "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", 
+                  "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on",
+                  "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such",
+                  "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to",
+                  "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who",
                   "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"
 
-])
+                  ])
 
 '''
 #possibly/potential way to track unique pages, all subdomains, and word counts of pages
@@ -34,23 +34,23 @@ storage = {
 #             current_token = []
 #             while True:
 #                 # Read one line at a time
-#                 line = file.readline()  
+#                 line = file.readline()
 #                 if not line:
 #                     # Exit if end of file is reached
-#                     break  
+#                     break
 
 #                 for char in line:
 #                     # Check if the character is an English letter or digit manually
 #                     if letter_or_digit(char):
 #                         # Add character to current token
-#                         current_token.append(char)  
+#                         current_token.append(char)
 #                     else:
 #                         # If a token has been formed yield it and reset for next
 #                         if current_token:
 #                             # Convert to lowercase before yielding
-#                             yield ''.join(current_token).lower()  
+#                             yield ''.join(current_token).lower()
 #                             # Reset token for next
-#                             current_token = []  
+#                             current_token = []
 
 #             # Yield the last token if any
 #             if current_token:
@@ -75,7 +75,7 @@ storage = {
 #             frequencies[token] += 1
 #         else:
 #             frequencies[token] = 1
-    
+
 #     return frequencies
 
 
@@ -87,7 +87,7 @@ storage = {
 
 #         # Find the common tokens
 #         common = tokens_file1.intersection(tokens_file2)
-        
+
 #         print(f"The number of common tokens: {len(common)}")
 
 #     # Error handling
@@ -100,22 +100,19 @@ storage = {
 
 def scraper(url, resp):
 
-    #Theory to see if this actually checks whether "content" is empty or small
+    # Theory to see if this actually checks whether "content" is empty or small
     '''
     if len(resp.raw_response.content) < 100:
         return []
     '''
 
-    
     if resp.status != 200 or resp.raw_response is None or resp.raw_response.content is None:
         return []
-    
+
     if len(resp.raw_response.content) < 100:
         return []
-    
 
     text = html.fromstring(resp.raw_response.content).text_content()
-
 
     words = re.findall(r'\b\w+\b', text)
     len(words)
@@ -123,7 +120,6 @@ def scraper(url, resp):
     if len(words) < 500:
         return []
 
-    
     links = extract_next_links(url, resp)
 
     """
@@ -138,7 +134,6 @@ def scraper(url, resp):
     #calls helper function which tracks word freq and longest page
     helper(url, resp.raw_response.content)
     '''
-
 
     '''
     # gets all subdomain potentially 
@@ -157,6 +152,7 @@ def scraper(url, resp):
 
     return [link for link in links if is_valid(link)]
 
+
 def extract_next_links(url, resp):
     # Implementation required.
     # url: the URL that was used to get the page
@@ -167,17 +163,17 @@ def extract_next_links(url, resp):
     #         resp.raw_response.url: the url, again
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
-    
+
     try:
         # jacqueline -- trying smth out (with lxml)
-        
+
         #       --> nothing retrieved, so empty list
         #
-        content = html.fromstring(resp.raw_response.content) 
+        content = html.fromstring(resp.raw_response.content)
         #       --> converts html to string
         #
         #
-        links = content.xpath('//a/@href') 
+        links = content.xpath('//a/@href')
         #       --> gets hyperlinks in the raw content
         #
         res = []
@@ -191,41 +187,43 @@ def extract_next_links(url, resp):
     except:
         return []
 
-
-    # urlparse: parses url 
-    #urljoin: combines urls to create absolute url 
+    # urlparse: parses url
+    # urljoin: combines urls to create absolute url
     # absolute url:  full url (http://uci.edu/stuff)
     # relative url: url that only has path (/stuff)
 
-    #<anchor tag <a> defines hyperlink (used to link from one page to another)
-    #href attribute indicates the link's destination (url)
-    #<a> tag is not a hyperlink without href attribute
-    
+    # <anchor tag <a> defines hyperlink (used to link from one page to another)
+    # href attribute indicates the link's destination (url)
+    # <a> tag is not a hyperlink without href attribute
+
 
 def is_valid(url):
-    # Decide whether to crawl this url or not. 
+    # Decide whether to crawl this url or not.
     # If you decide to crawl it, return True; otherwise return False.
     # There are already some conditions that return False.
 
     try:
         parsed = urlparse(url)
 
-        #list of provided domains that are valid
-        domains = [".ics.uci.edu/", ".cs.uci.edu/", ".informatics.uci.edu/", ".stat.uci.edu/", "today.uci.edu/department/information_computer_sciences/"]
+        # list of provided domains that are valid
+        domains = [".ics.uci.edu/", ".cs.uci.edu/", ".informatics.uci.edu/",
+                   ".stat.uci.edu/", "today.uci.edu/department/information_computer_sciences/"]
 
-        #checks if domains that are valid in url - returns false if url doesn't have them
+        # checks if domains that are valid in url - returns false if url doesn't have them
         if all(domain not in url for domain in domains):
             return False
-        
+
         if "https://isg.ics.uci.edu/events/" in url:
             return False
-        
+
         if ".war" in url:
             return False
-        
+
         if ".php" in url:
             return False
 
+        if "https://www.ics.uci.edu/~eppstein/pix/" in url:
+            return False
 
         if parsed.scheme not in set(["http", "https"]):
             return False
@@ -240,8 +238,9 @@ def is_valid(url):
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
 
     except TypeError:
-        print ("TypeError for ", parsed)
+        print("TypeError for ", parsed)
         raise
+
 
 """
 def helper(url, content):
