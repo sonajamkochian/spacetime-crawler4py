@@ -105,6 +105,25 @@ def scraper(url, resp):
     if len(resp.raw_response.content) < 100:
         return []
     '''
+
+    
+    if resp.status != 200 or resp.raw_response is None or resp.raw_response.content is None:
+        return []
+    
+    if len(resp.raw_response.content) < 100:
+        return []
+    
+
+    text = html.fromstring(resp.raw_response.content).text_content()
+
+
+    words = re.findall(r'\b\w+\b', text)
+    len(words)
+
+    if len(words) < 500:
+        return []
+
+
     
     links = extract_next_links(url, resp)
 
@@ -152,8 +171,7 @@ def extract_next_links(url, resp):
     
     try:
         # jacqueline -- trying smth out (with lxml)
-        if resp.status != 200:
-            return []
+        
         #       --> nothing retrieved, so empty list
         #
         content = html.fromstring(resp.raw_response.content) 
