@@ -106,11 +106,12 @@ def scraper(url, resp):
         return []
     
     '''
+
     content = resp.raw_response.content.decode('utf-8')
     words = re.findall(r'\b\w+\b', content)
     if len(words) < 100:
         return []
-    '''
+
     links = extract_next_links(url, resp)
     """
     #stores unique pages, disregarding fragements. 
