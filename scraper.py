@@ -111,7 +111,6 @@ def scraper(url, resp):
     if len(words) < 100:
         return []
 
-
     links = extract_next_links(url, resp)
 
     """
@@ -142,7 +141,6 @@ def scraper(url, resp):
         storage["subdomains"][sub] += 1
 
     '''
-
 
     return [link for link in links if is_valid(link)]
 
