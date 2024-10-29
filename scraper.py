@@ -106,12 +106,6 @@ def scraper(url, resp):
         return []
     '''
     
-    content = resp.raw_response.content.decode('utf-8', errors = 'ignore' )
-    
-    words = re.findall(r'\b\w+\b', content)
-    if len(words) < 100:
-        return []
-    
     links = extract_next_links(url, resp)
 
     """
@@ -165,6 +159,10 @@ def extract_next_links(url, resp):
         content = html.fromstring(resp.raw_response.content) 
         #       --> converts html to string
         #
+        words = re.findall(r'\b\w+\b', content)
+        if len(words) < 100:
+            return []
+        
         links = content.xpath('//a/@href') 
         #       --> gets hyperlinks in the raw content
         #
