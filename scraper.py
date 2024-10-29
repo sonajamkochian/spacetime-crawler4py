@@ -105,12 +105,18 @@ def scraper(url, resp):
     if len(resp.raw_response.content) < 100:
         return []
     '''
+    # checks if status is not OK
+    if resp.status != 200 or not resp.raw_response or not resp.raw_response.content:
+        return []
 
-    content = resp.raw_response.content.decode('utf-8')
+    content = resp.raw_response.content.decode('utf-8', errors = 'ignore' )
+    # converts HTML to plain text
+    text_content = html.fromstring(content).text_content().lower()
+    
     words = re.findall(r'\b\w+\b', content)
     if len(words) < 100:
         return []
-
+    
     links = extract_next_links(url, resp)
 
     """
