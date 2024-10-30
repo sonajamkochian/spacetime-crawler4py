@@ -14,97 +14,7 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 
                   ])
 
-'''
-#possibly/potential way to track unique pages, all subdomains, and word counts of pages
-storage = {
-    "unique": set(),
-    "subdomains": Counter(),
-    "page_word_count":  Counter(),
-
-}
-'''
-
-
-# def letter_or_digit(char):
-#     return ('a' <= char <= 'z') or ('A' <= char <= 'Z') or ('0' <= char <= '9')
-
-# def tokenize(path_file: str):
-#     try:
-#         with open(path_file, 'r', encoding='utf-8') as file:
-#             current_token = []
-#             while True:
-#                 # Read one line at a time
-#                 line = file.readline()
-#                 if not line:
-#                     # Exit if end of file is reached
-#                     break
-
-#                 for char in line:
-#                     # Check if the character is an English letter or digit manually
-#                     if letter_or_digit(char):
-#                         # Add character to current token
-#                         current_token.append(char)
-#                     else:
-#                         # If a token has been formed yield it and reset for next
-#                         if current_token:
-#                             # Convert to lowercase before yielding
-#                             yield ''.join(current_token).lower()
-#                             # Reset token for next
-#                             current_token = []
-
-#             # Yield the last token if any
-#             if current_token:
-#                 yield ''.join(current_token).lower()
-
-#     # Error handling
-#     except FileNotFoundError:
-#         print(f"Error! The file {path_file} not found.")
-#         raise
-#     except IOError as error:
-#         print(f"Error reading file {path_file}: {error}")
-#         raise
-
-
-# def computeWordFrequencies(tokens: list[str]) -> dict[str,int]:
-#     # initialize empty dictionary to store word frequency
-#     frequencies = {}
-
-#     for token in tokens:
-#         if token in frequencies:
-#             # Increment the count
-#             frequencies[token] += 1
-#         else:
-#             frequencies[token] = 1
-
-#     return frequencies
-
-
-# def findCommonTokens(file1: str, file2: str):
-#     try:
-#         # Create a set for each file
-#         tokens_file1 = set(tokenize(file1))
-#         tokens_file2 = set(tokenize(file2))
-
-#         # Find the common tokens
-#         common = tokens_file1.intersection(tokens_file2)
-
-#         print(f"The number of common tokens: {len(common)}")
-
-#     # Error handling
-#     except (FileNotFoundError) as error:
-#         print(f"Error: {error}")
-#         sys.exit(1)
-#     except IOError as error:
-#         print(f"Error reading the file: {error}")
-#         sys.exit(1)
-
 def scraper(url, resp):
-
-    # Theory to see if this actually checks whether "content" is empty or small
-    '''
-    if len(resp.raw_response.content) < 100:
-        return []
-    '''
 
     if resp.status != 200 or resp.raw_response is None or resp.raw_response.content is None:
         return []
@@ -235,21 +145,3 @@ def is_valid(url):
     except TypeError:
         print("TypeError for ", parsed)
         raise
-
-
-"""
-def helper(url, content):
-    #from lxml documentation: .text_content(): Returns the text content of the element, including the text content of its children, with no markup.
-
-    text = html.fromstring(content).text_content()
-    words = re.findall(r"\b\w+\b", text.lower())
-    filtered = [word for word in words if word not in stop_words]
-    count = len(filtered)
-
-
-    #should probably count per page and track the longest 
-    storage["page_word_count"][url] = count
-
-
-
-"""
