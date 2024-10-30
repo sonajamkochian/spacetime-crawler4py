@@ -109,6 +109,10 @@ def is_valid(url):
         # list of provided domains that are valid
         domains = [".ics.uci.edu/", ".cs.uci.edu/", ".informatics.uci.edu/",
                    ".stat.uci.edu/", "today.uci.edu/department/information_computer_sciences/"]
+        
+        #Filters
+        filters = ["https://isg.ics.uci.edu/events/", ".war", ".php", "https://www.ics.uci.edu/~eppstein/pix/",
+                   "?outlook-ical=", "?share=", "http://flamingo.ics.uci.edu/release", "https://cloudberry.ics.uci.edu/"]
 
         # Filter out links with date-only patterns
         date_pattern = r'(\b\d{4}[-/]\d{2}[-/]\d{2}\b|\b\d{2}[-/]\d{2}[-/]\d{4}\b)'
@@ -119,22 +123,7 @@ def is_valid(url):
         if all(domain not in url for domain in domains):
             return False
 
-        if "https://isg.ics.uci.edu/events/" in url:
-            return False
-        elif ".war" in url:
-            return False
-        elif ".php" in url:
-            return False
-        elif "https://www.ics.uci.edu/~eppstein/pix/" in url:
-            return False
-        elif "?outlook-ical=" in url:
-            return False
-        elif "?share=" in url:
-            return False
-        elif "http://flamingo.ics.uci.edu/release" in url:
-            return False
-        elif "https://cloudberry.ics.uci.edu/" in url:
-            return False
+        
 
         if parsed.scheme not in set(["http", "https"]):
             return False
