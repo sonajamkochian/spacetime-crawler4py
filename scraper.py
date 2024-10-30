@@ -122,8 +122,11 @@ def is_valid(url):
         # checks if domains that are valid in url - returns false if url doesn't have them
         if all(domain not in url for domain in domains):
             return False
-
         
+        if any(filter in url for filter in filters):
+            return False
+
+
 
         if parsed.scheme not in set(["http", "https"]):
             return False
