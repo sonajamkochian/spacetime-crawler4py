@@ -14,6 +14,7 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 
                   ])
 
+
 def scraper(url, resp):
 
     if resp.status != 200 or resp.raw_response is None or resp.raw_response.content is None:
@@ -49,7 +50,7 @@ def scraper(url, resp):
         return []
 
     links = extract_next_links(url, resp)
-    
+
     return [link for link in links if is_valid(link)]
 
 
@@ -108,6 +109,11 @@ def is_valid(url):
         # list of provided domains that are valid
         domains = [".ics.uci.edu/", ".cs.uci.edu/", ".informatics.uci.edu/",
                    ".stat.uci.edu/", "today.uci.edu/department/information_computer_sciences/"]
+
+        # Filter out links with date-only patterns
+        date_pattern = r'(\b\d{4}[-/]\d{2}[-/]\d{2}\b|\b\d{2}[-/]\d{2}[-/]\d{4}\b)'
+        if re.search(date_pattern, url):
+            return False
 
         # checks if domains that are valid in url - returns false if url doesn't have them
         if all(domain not in url for domain in domains):
