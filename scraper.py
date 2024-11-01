@@ -69,7 +69,7 @@ def extract_next_links(url, resp):
 
         if resp.status != 200 or resp.raw_response is None or resp.raw_response.content is None:
             return []
-        
+
         # jacqueline -- trying smth out (with lxml)
 
         #       --> nothing retrieved, so empty list
@@ -113,11 +113,11 @@ def is_valid(url):
         # list of provided domains that are valid
         domains = [".ics.uci.edu/", ".cs.uci.edu/", ".informatics.uci.edu/",
                    ".stat.uci.edu/", "today.uci.edu/department/information_computer_sciences/"]
-        
-        #Filters
-        filters = ["https://isg.ics.uci.edu/events/", ".war", ".php", "https://www.ics.uci.edu/~eppstein/pix/",
+
+        # Filters
+        filters = ["https://isg.ics.uci.edu/events/", ".war", "?ical=", ".php", "https://www.ics.uci.edu/~eppstein/pix/",
                    "?outlook-ical=", "?share=", "http://flamingo.ics.uci.edu/release", "cloudberry",
-                   "timeline?", "?format=", "precision=second", "https://wics.ics.uci.edu/events/", "login"]
+                   "timeline?", "?format=", "precision=second", "https://wics.ics.uci.edu/events/", "wics.uci.edu/events" "login"]
 
         # Filter out links with date-only patterns
         date_pattern = r'(\b\d{4}[-/]\d{2}[-/]\d{2}\b|\b\d{2}[-/]\d{2}[-/]\d{4}\b)'
@@ -127,11 +127,9 @@ def is_valid(url):
         # checks if domains that are valid in url - returns false if url doesn't have them
         if all(domain not in url for domain in domains):
             return False
-        
+
         if any(filter in url for filter in filters):
             return False
-
-
 
         if parsed.scheme not in set(["http", "https"]):
             return False
