@@ -117,7 +117,7 @@ def is_valid(url):
         #Filters
         filters = ["https://isg.ics.uci.edu/events/", ".war", ".php", "https://www.ics.uci.edu/~eppstein/pix/",
                    "?outlook-ical=", "?share=", "http://flamingo.ics.uci.edu/release", "cloudberry",
-                   "timeline?", "?format=", "precision=second", "https://wics.ics.uci.edu/events/"]
+                   "timeline?", "?format=", "precision=second", "https://wics.ics.uci.edu/events/", "login"]
 
         # Filter out links with date-only patterns
         date_pattern = r'(\b\d{4}[-/]\d{2}[-/]\d{2}\b|\b\d{2}[-/]\d{2}[-/]\d{4}\b)'
