@@ -66,6 +66,10 @@ def extract_next_links(url, resp):
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
 
     try:
+
+        if resp.status != 200 or resp.raw_response is None or resp.raw_response.content is None:
+            return []
+        
         # jacqueline -- trying smth out (with lxml)
 
         #       --> nothing retrieved, so empty list
