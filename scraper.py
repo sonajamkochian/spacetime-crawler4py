@@ -21,7 +21,7 @@ word_counter = Counter()
 number_of_subdomains = Counter()
 
 def save_data_file():
-    with open("report.txt") as file:
+    with open("report.txt", 'w') as file:
 
         file.write(f"Number of unique pages: {len(unqique_pages)}\n\n")
 
