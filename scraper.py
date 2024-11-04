@@ -1,7 +1,7 @@
 import re
 from urllib.parse import urljoin, urlparse, urlunparse
 from lxml import html
-from Collections import Counter
+from collections import Counter
 
 stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between",
                   "both", "but", "by", "can't", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't",
