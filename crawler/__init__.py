@@ -24,4 +24,4 @@ class Crawler(object):
     def join(self):
         for worker in self.workers:
             worker.join()
-        save_data_file
+        save_data_file()
