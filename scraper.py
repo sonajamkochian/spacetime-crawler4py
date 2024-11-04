@@ -1,7 +1,7 @@
 import re
 from urllib.parse import urljoin, urlparse, urlunparse
 from lxml import html
-# from Collections import Counter
+from Collections import Counter
 
 stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between",
                   "both", "but", "by", "can't", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't",
@@ -14,6 +14,20 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 
                   ])
 
+
+
+unqique_pages  = set()
+longest_page_in_words = {"url": "", "word_count": 0}
+
+word_counter = Counter()
+number_of_subdomains = Counter()
+
+
+def save_data_file():
+    pass
+
+
+    
 
 def scraper(url, resp):
 
@@ -44,6 +58,32 @@ def scraper(url, resp):
         words = re.findall(r'\b\w+\b', text)
         if len(words) < 500:
             return []
+
+
+        #gets unique urls
+        defrag_url = urlparse(url)._replace(fragment="").geturl()
+        unqique_pages.add(defrag_url)
+
+        #updates if new longest page is found
+        if len(words) > longest_page_in_words["word_count"]:
+            longest_page_in_words["url"] = url
+            longest_page_in_words["word_count"] = len(words)
+
+        
+      
+
+        
+        #should get word frequency excluding stop_words
+        filter = [word.lower() for word in words if word.lower() not in stop_words]
+        word_counter.update(filter)
+
+        #updates subdomain count 
+        parsed_url = urlparse(url)
+        if ".uci.edu" in parsed_url.netloc:
+            number_of_subdomains[parsed_url.netloc] += 1
+
+    
+        
 
     except Exception as e:
         print(f"Error parsing content at {url}: {e}")
