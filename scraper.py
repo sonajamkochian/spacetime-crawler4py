@@ -14,36 +14,19 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 
                   ])
 
-
-
 unqique_pages  = set()
 longest_page_in_words = {"url": "", "word_count": 0}
 
 word_counter = Counter()
 number_of_subdomains = Counter()
 
-
 def save_data_file():
     pass
-
-
-    
 
 def scraper(url, resp):
 
     if resp.status != 200 or resp.raw_response is None or resp.raw_response.content is None:
         return []
-
-    # if len(resp.raw_response.content) < 100:
-    #     return []
-
-    # text = html.fromstring(resp.raw_response.content).text_content()
-
-    # words = re.findall(r'\b\w+\b', text)
-    # len(words)
-
-    # if len(words) < 500:
-    #     return []
 
     try:
         # Decode content safely and check if it's non-empty
@@ -59,31 +42,23 @@ def scraper(url, resp):
         if len(words) < 500:
             return []
 
-
-        #gets unique urls
+        # gets unique urls
         defrag_url = urlparse(url)._replace(fragment="").geturl()
         unqique_pages.add(defrag_url)
 
-        #updates if new longest page is found
+        # updates if new longest page is found
         if len(words) > longest_page_in_words["word_count"]:
             longest_page_in_words["url"] = url
             longest_page_in_words["word_count"] = len(words)
-
-        
-      
-
         
         #should get word frequency excluding stop_words
         filter = [word.lower() for word in words if word.lower() not in stop_words]
         word_counter.update(filter)
 
-        #updates subdomain count 
+        # updates subdomain count 
         parsed_url = urlparse(url)
         if ".uci.edu" in parsed_url.netloc:
             number_of_subdomains[parsed_url.netloc] += 1
-
-    
-        
 
     except Exception as e:
         print(f"Error parsing content at {url}: {e}")
@@ -140,7 +115,6 @@ def extract_next_links(url, resp):
     # <anchor tag <a> defines hyperlink (used to link from one page to another)
     # href attribute indicates the link's destination (url)
     # <a> tag is not a hyperlink without href attribute
-
 
 def is_valid(url):
     # Decide whether to crawl this url or not.
