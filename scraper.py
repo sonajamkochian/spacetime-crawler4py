@@ -14,32 +14,36 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 
                   ])
 
-unqique_pages  = set()
+unique_pages  = set()
 longest_page_in_words = {"url": "", "word_count": 0}
 
 word_counter = Counter()
 number_of_subdomains = Counter()
 
 def save_data_file():
-    with open("report.txt", 'w') as file:
+    try:
 
-        file.write(f"Number of unique pages: {len(unqique_pages)}\n\n")
+        with open("report.txt", 'w') as file:
 
-
-        file.write(f"Longest page URL: {longest_page_in_words['url']}\n")
-        file.write(f"Longest page word count: {longest_page_in_words['word_count']}\n\n")
-                
+            file.write(f"Number of unique pages: {len(unique_pages)}\n\n")
 
 
-        file.write(f"50 most common words: \n")
-        for word, count in word_counter.most_common(50):
-            file.write(f'{word}: {count}\n')
-        file.write(f"\n")
+            file.write(f"Longest page URL: {longest_page_in_words['url']}\n")
+            file.write(f"Longest page word count: {longest_page_in_words['word_count']}\n\n")
+                    
 
 
-        file.write("Subdomains total: \n")
-        for subdomain, count in sorted(number_of_subdomains.items()):
-            file.write(f"{subdomain}, {count}\n")
+            file.write(f"50 most common words: \n")
+            for word, count in word_counter.most_common(50):
+                file.write(f'{word}: {count}\n')
+            file.write(f"\n")
+
+
+            file.write("Subdomains total: \n")
+            for subdomain, count in sorted(number_of_subdomains.items()):
+                file.write(f"{subdomain}, {count}\n")
+    except Exception as e:
+        print(f"Error with file: {e}")
 
 
 
@@ -64,7 +68,7 @@ def scraper(url, resp):
 
         # gets unique urls
         defrag_url = urlparse(url)._replace(fragment="").geturl()
-        unqique_pages.add(defrag_url)
+        unique_pages.add(defrag_url)
 
         # updates if new longest page is found
         if len(words) > longest_page_in_words["word_count"]:
