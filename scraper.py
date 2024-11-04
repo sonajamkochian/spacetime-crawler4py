@@ -14,28 +14,26 @@ stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am
 
                   ])
 
-unqique_pages  = set()
+unqique_pages = set()
 longest_page_in_words = {"url": "", "word_count": 0}
 
 word_counter = Counter()
 number_of_subdomains = Counter()
+
 
 def save_data_file():
     with open("report.txt") as file:
 
         file.write(f"Number of unique pages: {len(unqique_pages)}\n\n")
 
-
         f.write(f"Longest page URL: {len(unqique_pages)}\n\n")
-
 
         f.write(f"50 most common")
 
 
-
 def scraper(url, resp):
 
-    if resp.status != 200 or resp.raw_response is None or resp.raw_response.content is None:
+    if resp.status != 200 or resp.status == 404 or resp.raw_response is None or resp.raw_response.content is None:
         return []
 
     try:
@@ -60,12 +58,13 @@ def scraper(url, resp):
         if len(words) > longest_page_in_words["word_count"]:
             longest_page_in_words["url"] = url
             longest_page_in_words["word_count"] = len(words)
-        
-        #should get word frequency excluding stop_words
-        filter = [word.lower() for word in words if word.lower() not in stop_words]
+
+        # should get word frequency excluding stop_words
+        filter = [word.lower()
+                  for word in words if word.lower() not in stop_words]
         word_counter.update(filter)
 
-        # updates subdomain count 
+        # updates subdomain count
         parsed_url = urlparse(url)
         if ".uci.edu" in parsed_url.netloc:
             number_of_subdomains[parsed_url.netloc] += 1
@@ -125,6 +124,7 @@ def extract_next_links(url, resp):
     # <anchor tag <a> defines hyperlink (used to link from one page to another)
     # href attribute indicates the link's destination (url)
     # <a> tag is not a hyperlink without href attribute
+
 
 def is_valid(url):
     # Decide whether to crawl this url or not.
