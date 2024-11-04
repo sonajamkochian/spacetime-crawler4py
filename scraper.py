@@ -21,7 +21,17 @@ word_counter = Counter()
 number_of_subdomains = Counter()
 
 def save_data_file():
-    pass
+    with open("report.txt") as file:
+
+        file.write(f"Number of unique pages: {len(unqique_pages)}\n\n")
+
+
+        f.write(f"Longest page URL: {len(unqique_pages)}\n\n")
+
+
+        f.write(f"50 most common")
+
+
 
 def scraper(url, resp):
 
