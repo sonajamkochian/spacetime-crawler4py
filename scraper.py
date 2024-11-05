@@ -66,7 +66,7 @@ def scraper(url, resp):
 
         # Find words and filter out pages with fewer than 500 words
         words = re.findall(r'\b\w+\b', text)
-        if len(words) < 500:
+        if len(words) < 100:
             return []
 
         # gets unique urls
