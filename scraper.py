@@ -60,7 +60,7 @@ def scraper(url, resp):
 
         # Parse the HTML content to text
         tree = html.fromstring(content)
-        text_content = " ".join(tree.xpath("//body//p//text() | //body//h1//text() | //body//h2//text() | //body//li//text() | //body//article//text() | //body//section//text()"))
+        text_content = " ".join(tree.xpath("//body//p//text() | //body//h1//text() | //body//h2//text() | //body//h3//text() | //body//h4//text() | //body//5//text() | //body//h6//text() | //body//li//text() | //body//article//text() | //body//section//text()"))
 
         text = " ".join(text_content.split())
 
