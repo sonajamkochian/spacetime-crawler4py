@@ -60,8 +60,10 @@ def scraper(url, resp):
             return []
 
         # Parse the HTML content to text
-        text = html.fromstring(content).text_content()
-        text = " ".join(tree.xpath("//body//p//text() | //body//h1//text() | //body//h2//text() | //body//li//text() | //body//article//text() | //body//section//text()"))
+        parsText = html.fromstring(content)
+        text_content = " ".join(tree.xpath("//body//p//text() | //body//h1//text() | //body//h2//text() | //body//li//text() | //body//article//text() | //body//section//text()"))
+
+        text = " ".join(text_content.split())
 
         # Find words and filter out pages with fewer than 500 words
         words = re.findall(r'\b\w+\b', text)
