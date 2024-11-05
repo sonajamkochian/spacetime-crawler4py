@@ -1,6 +1,7 @@
 import re
 from urllib.parse import urljoin, urlparse, urlunparse
 from lxml import html
+from lxml import tree
 from collections import Counter
 
 stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between",
@@ -60,6 +61,7 @@ def scraper(url, resp):
 
         # Parse the HTML content to text
         text = html.fromstring(content).text_content()
+        text = " ".join(tree.xpath("//body//p//text() | //body//h1//text() | //body//h2//text() | //body//li//text() | //body//article//text() | //body//section//text()"))
 
         # Find words and filter out pages with fewer than 500 words
         words = re.findall(r'\b\w+\b', text)
