@@ -59,14 +59,11 @@ def scraper(url, resp):
             return []
 
         # Parse the HTML content to text
-        tree = html.fromstring(content)
-        text_content = " ".join(tree.xpath("//body//p//text() | //body//h1//text() | //body//h2//text() | //body//h3//text() | //body//h4//text() | //body//h5//text() | //body//h6//text() | //body//li//text() | //body//article//text() | //body//section//text() | //body//span//text()"))
-
-        text = " ".join(text_content.split())
+        text = html.fromstring(content).text_content()
 
         # Find words and filter out pages with fewer than 500 words
-        words = re.findall(r"\b[a-zA-Z][a-zA-Z']*\b", text)
-        if len(words) < 10:
+        words = re.findall(r'\b\w+\b', text)
+        if len(words) < 500:
             return []
 
         # gets unique urls
