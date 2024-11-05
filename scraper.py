@@ -1,7 +1,6 @@
 import re
 from urllib.parse import urljoin, urlparse, urlunparse
 from lxml import html
-from lxml import tree
 from collections import Counter
 
 stop_words = set(["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between",
@@ -60,7 +59,7 @@ def scraper(url, resp):
             return []
 
         # Parse the HTML content to text
-        parsText = html.fromstring(content)
+        tree = html.fromstring(content)
         text_content = " ".join(tree.xpath("//body//p//text() | //body//h1//text() | //body//h2//text() | //body//li//text() | //body//article//text() | //body//section//text()"))
 
         text = " ".join(text_content.split())
